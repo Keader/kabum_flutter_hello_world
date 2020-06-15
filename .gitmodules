@@ -1,0 +1,3 @@
+[submodule "lib/kabum_privateAPI"]
+	path = lib/kabum_privateAPI
+	url = https://github.com/Keader/kabum_privateAPI.git

@@ -1,10 +1,10 @@
 import 'dart:async';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:kabumflutterhelloworld/productDetail.dart';
 
 import 'home.dart';
+import 'kabum_privateAPI/kabum_api/Kabum.dart';
 
 class ProductSuggestion {
   final String name;

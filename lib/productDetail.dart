@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
+import 'kabum_privateAPI/kabum_api/Kabum.dart';
+
 class ProductDetail {
   final String name;
   final String price;

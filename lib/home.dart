@@ -7,6 +7,8 @@ import 'package:dio/dio.dart';
 import 'package:kabumflutterhelloworld/productDetail.dart';
 import 'package:kabumflutterhelloworld/search.dart';
 
+import 'kabum_privateAPI/kabum_api/Kabum.dart';
+
 class Product {
   final String name;
   final String price;

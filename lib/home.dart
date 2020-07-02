@@ -140,9 +140,12 @@ class AppHomeState extends State<AppHome> {
         itemCount: _products.length,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage(_products.elementAt(index).photo),
-              ),
+              leading: Hero(
+                  tag: _products.elementAt(index).code,
+                  child: CircleAvatar(
+                    backgroundImage:
+                        NetworkImage(_products.elementAt(index).photo),
+                  )),
               title: Text(_products.elementAt(index).name,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,

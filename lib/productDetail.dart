@@ -52,6 +52,15 @@ class AppProductDetailState extends State<AppProductDetail> {
     return CarouselSlider(
       options: CarouselOptions(autoPlay: true),
       items: _productDetail.photos.map((it) {
+        if (_productDetail.photos.first == it){
+          return Container(
+              child: Hero(
+                  child: Image.network(it),
+                  tag: _productDetail.code
+              )
+          );
+        }
+
         return Container(child: Image.network(it));
       }).toList(),
     );

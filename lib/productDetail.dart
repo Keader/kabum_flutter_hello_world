@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:lottie/lottie.dart';
 
 import 'kabum_privateAPI/kabum_api/Kabum.dart';
 
@@ -33,7 +34,11 @@ class AppProductDetailState extends State<AppProductDetail> {
   Widget build(BuildContext context) {
     if (_productDetail == null) {
       _getProductDeftail();
-      return Container(child: Center(child: CircularProgressIndicator()));
+      return Container(
+          child: Center(
+              child: Lottie.asset('assets/load_detail.json')
+          )
+      );
     }
 
     return ListView(children: [

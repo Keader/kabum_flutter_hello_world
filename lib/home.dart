@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:kabumflutterhelloworld/productDetail.dart';
 import 'package:kabumflutterhelloworld/search.dart';
+import 'package:lottie/lottie.dart';
 
 import 'kabum_privateAPI/kabum_api/Kabum.dart';
 
@@ -126,8 +127,7 @@ class AppHomeState extends State<AppHome> {
       return Center(
           child: Column(
               children: [
-                Text("Loading..."),
-                CircularProgressIndicator(),
+                Lottie.asset('assets/explosion2.json')
         ], mainAxisAlignment: MainAxisAlignment.center),
       );
     }

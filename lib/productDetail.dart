@@ -33,7 +33,7 @@ class AppProductDetailState extends State<AppProductDetail> {
   @override
   Widget build(BuildContext context) {
     if (_productDetail == null) {
-      _getProductDeftail();
+      _getProductDetail();
       return Container(
           child: Center(
               child: Lottie.asset('assets/load_detail.json')
@@ -144,7 +144,7 @@ class AppProductDetailState extends State<AppProductDetail> {
     return Html(data: _productDetail.description);
   }
 
-  void _getProductDeftail() async {
+  void _getProductDetail() async {
     Response resp = await Dio().get(Dictionary.productDetailEndPoint + widget.code);
     dynamic data = resp.data;
 

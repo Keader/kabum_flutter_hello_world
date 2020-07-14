@@ -27,6 +27,7 @@ dependencies:
   carousel_slider: ^2.0.0
   flutter_html: ^1.0.0
   lottie: ^0.4.0+1
+  floor: ^0.13.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -36,6 +37,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  floor_generator: ^0.13.0
+  build_runner: ^1.7.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

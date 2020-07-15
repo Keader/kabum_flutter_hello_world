@@ -25,9 +25,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primaryColor: Colors.black,
-      ),
       home: AppHome(),
     );
   }
@@ -47,15 +44,50 @@ class AppHomeState extends State<AppHome> {
 
   @override
   Widget build(BuildContext context) {
+    return DefaultTabController(
+        length: 2,
+        child: Theme(
+          data: ThemeData(
+              brightness: Brightness.light,
+            primaryColor: Colors.blue
+          ),
+          child: Scaffold(
+            bottomNavigationBar: Container (
+              height: 55.0,
+              child: TabBar (
+                tabs: [
+                  Tab(icon: Icon(Icons.add_shopping_cart, color: Colors.lightBlue,), text: "Promoções",),
+                  Tab(icon: Icon(Icons.favorite, color: Colors.redAccent), text: "Favoritos"),
+                ],
+                unselectedLabelColor: Color(0xff999999),
+                labelColor: Colors.black,
+                indicatorColor: Colors.transparent
+              ),
+            ),
+            body: TabBarView(
+              children: [
+                _buildPromotionHome(),
+                Center( child: Text("Page 2")),
+              ],
+            ),
+          ),
+        )
+    );
+  }
+
+  Widget _buildPromotionHome() {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Kabum Flutter Teste', style: TextStyle(fontSize: 18.0, color: Colors.lightBlueAccent)),
+        title: Container(
+          height: 130.0,
+          width: 130.0,
+          child: Image.network('https://static.kabum.com.br/conteudo/temas/001/imagens/topo/logo_kabum_.png'),
+        ),
         actions: <Widget>[
           IconButton(icon: Icon(Icons.search), onPressed: _pushSearch),
         ],
       ),
-
       body: _buildHome(),
     );
   }
@@ -69,7 +101,6 @@ class AppHomeState extends State<AppHome> {
         if (_currentPage < _maxPages) {
           ++_currentPage;
         }
-
           _getProducts();
       }
     });
@@ -142,9 +173,8 @@ class AppHomeState extends State<AppHome> {
           return ListTile(
               leading: Hero(
                   tag: _products.elementAt(index).code,
-                  child: CircleAvatar(
-                    backgroundImage:
-                        NetworkImage(_products.elementAt(index).photo),
+                  child: CircleAvatar (
+                    backgroundImage: NetworkImage(_products.elementAt(index).photo),
                   )),
               title: Text(_products.elementAt(index).name,
                   maxLines: 2,

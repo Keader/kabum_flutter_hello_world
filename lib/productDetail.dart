@@ -55,9 +55,9 @@ class AppProductDetailState extends State<AppProductDetail> {
 
   Widget _buildSlider() {
     return CarouselSlider(
-      options: CarouselOptions(autoPlay: true),
+      options: CarouselOptions(autoPlay: _productDetail.photos.length > 1 ? true : false),
       items: _productDetail.photos.map((it) {
-        if (_productDetail.photos.first == it){
+        if (_productDetail.photos.first == it) {
           return Container(
               child: Hero(
                   child: Image.network(it),
@@ -159,9 +159,11 @@ class AppProductDetailState extends State<AppProductDetail> {
     String offerPrice = data['preco_desconto'].toString();
     String description = data['produto_html'];
 
-    setState(() {
-      _productDetail = ProductDetail(
-          name, price, convertedPhotos, code, offerPrice, description);
+    Future.delayed(const Duration(milliseconds: 500), () {
+      setState(() {
+        _productDetail = ProductDetail(
+            name, price, convertedPhotos, code, offerPrice, description);
+      });
     });
   }
 }

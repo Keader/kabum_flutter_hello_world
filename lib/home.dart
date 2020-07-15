@@ -17,6 +17,13 @@ class Product {
   final String code;
 
   Product(this.name, this.price, this.photo, this.code);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) || other is Product &&
+          runtimeType == other.runtimeType &&
+          code == other.code;
+  }
 }
 
 void main() => runApp(MyApp());
@@ -41,6 +48,7 @@ class AppHomeState extends State<AppHome> {
   int _maxPages = 10;
   int _currentPage = 1;
   final ScrollController _scrollController = ScrollController();
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -67,12 +75,16 @@ class AppHomeState extends State<AppHome> {
             body: TabBarView(
               children: [
                 _buildPromotionHome(),
-                Center( child: Text("Page 2")),
+                _buildFavoritePage(),
               ],
             ),
           ),
         )
     );
+  }
+
+  Widget _buildFavoritePage() {
+    return Center( child: Text("Page 2"));
   }
 
   Widget _buildPromotionHome() {
@@ -95,16 +107,21 @@ class AppHomeState extends State<AppHome> {
   @override
   void initState() {
     super.initState();
+
+    // Handle with page scrolldown
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+        // Loading already in progress
+        if (_isLoading)
+          return;
         // Check if we got the max pages already
-        if (_currentPage < _maxPages) {
+        if (_currentPage < _maxPages)
           ++_currentPage;
-        }
-          _getProducts();
+
+        setState(() { _isLoading = true; });
+        _getProducts();
       }
     });
-
   }
 
   @override
@@ -146,10 +163,10 @@ class AppHomeState extends State<AppHome> {
       String price = priceDouble.toStringAsFixed(2);
       String photo = entry['imagem'];
       String code = entry['codigo'].toString();
-      _products.add(Product(name, price, photo, code));
+        _products.add(Product(name, price, photo, code));
     }
 
-    setState(() {});
+    setState(() { _isLoading = false; });
   }
 
   Widget _buildHome() {
@@ -163,10 +180,21 @@ class AppHomeState extends State<AppHome> {
       );
     }
 
+    return Column (
+      children: [
+      Flexible(child: _buildListView()),
+        _getProgressBar()
+      ],
+    );
+  }
+
+  Widget _getProgressBar() => _isLoading ? LinearProgressIndicator(backgroundColor: Colors.lightBlue) : Container();
+
+  Widget _buildListView() {
     return ListView.separated(
         separatorBuilder: (context, index) => Divider(
-              color: Colors.black,
-            ),
+          color: Colors.black,
+        ),
         controller: _scrollController,
         itemCount: _products.length,
         itemBuilder: (BuildContext context, int index) {

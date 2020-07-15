@@ -54,22 +54,18 @@ class AppHomeState extends State<AppHome> {
   Widget build(BuildContext context) {
     return DefaultTabController(
         length: 2,
-        child: Theme(
-          data: ThemeData(
-              brightness: Brightness.light,
-            primaryColor: Colors.blue
-          ),
           child: Scaffold(
+            backgroundColor: Colors.blue,
             bottomNavigationBar: Container (
               height: 55.0,
               child: TabBar (
                 tabs: [
-                  Tab(icon: Icon(Icons.add_shopping_cart, color: Colors.lightBlue,), text: "Promoções",),
+                  Tab(icon: Icon(Icons.add_shopping_cart, color: Colors.orange,), text: "Promoções",),
                   Tab(icon: Icon(Icons.favorite, color: Colors.redAccent), text: "Favoritos"),
                 ],
-                unselectedLabelColor: Color(0xff999999),
-                labelColor: Colors.black,
-                indicatorColor: Colors.transparent
+                unselectedLabelColor: Colors.cyan[200],
+                labelColor: Colors.white,
+                indicatorColor: Colors.transparent,
               ),
             ),
             body: TabBarView(
@@ -79,12 +75,11 @@ class AppHomeState extends State<AppHome> {
               ],
             ),
           ),
-        )
     );
   }
 
   Widget _buildFavoritePage() {
-    return Center( child: Text("Page 2"));
+    return Center( child: Text("Not Implemented Yet <3"));
   }
 
   Widget _buildPromotionHome() {
@@ -188,7 +183,7 @@ class AppHomeState extends State<AppHome> {
     );
   }
 
-  Widget _getProgressBar() => _isLoading ? LinearProgressIndicator(backgroundColor: Colors.lightBlue) : Container();
+  Widget _getProgressBar() => _isLoading ? LinearProgressIndicator(backgroundColor: Colors.blue, valueColor: AlwaysStoppedAnimation<Color>(Colors.cyan),) : Container();
 
   Widget _buildListView() {
     return ListView.separated(

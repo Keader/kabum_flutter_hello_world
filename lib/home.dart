@@ -61,7 +61,7 @@ class AppHomeState extends State<AppHome> {
               child: TabBar (
                 tabs: [
                   Tab(icon: Icon(Icons.add_shopping_cart, color: Colors.orange,), text: "Promoções",),
-                  Tab(icon: Icon(Icons.favorite, color: Colors.redAccent), text: "Favoritos"),
+                  Tab(icon: Icon(Icons.remove_red_eye, color: Colors.tealAccent), text: "Observados"),
                 ],
                 unselectedLabelColor: Colors.cyan[200],
                 labelColor: Colors.white,

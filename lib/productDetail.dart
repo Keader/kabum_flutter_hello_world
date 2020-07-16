@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:lottie/lottie.dart';
 
+import 'custom/custom_icons.dart';
 import 'kabum_privateAPI/kabum_api/Kabum.dart';
 
 class ProductDetail {
@@ -41,16 +42,25 @@ class AppProductDetailState extends State<AppProductDetail> {
       );
     }
 
-    return ListView(children: [
-      Column(children: [
-        _buildSlider(),
-        Divider(thickness: 5, color: Colors.black12),
-        _buildProductName(),
-        Divider(thickness: 1, color: Colors.black12),
-        _buildPriceCard(),
-        _buildDescriptionCard()
-      ], mainAxisAlignment: MainAxisAlignment.start),
-    ]);
+    return Scaffold(
+        body: Container(
+      child: ListView(children: [
+        Column(children: [
+          Container(child: _buildSlider(), color: Colors.white),
+          _buildPriceCard(),
+          _buildDescriptionCard()
+        ], mainAxisAlignment: MainAxisAlignment.start),
+      ]),
+      color: Colors.grey[200],
+    ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          ///TODO: Make watch page
+        },
+        label: Text('Observar'),
+        icon: Icon(Icons.remove_red_eye),
+        backgroundColor: Colors.deepOrange,
+      ));
   }
 
   Widget _buildSlider() {
@@ -59,10 +69,7 @@ class AppProductDetailState extends State<AppProductDetail> {
       items: _productDetail.photos.map((it) {
         if (_productDetail.photos.first == it) {
           return Container(
-              child: Hero(
-                  child: Image.network(it),
-                  tag: _productDetail.code
-              )
+              child: Hero( child: Image.network(it), tag: _productDetail.code)
           );
         }
 
@@ -80,38 +87,51 @@ class AppProductDetailState extends State<AppProductDetail> {
   }
 
   Widget _buildPriceCard() {
-    return SizedBox(
+    return Container(
+        padding: EdgeInsets.all(8),
+        color: Colors.grey[200],
         child: Card(
-            child: Column(children: [
-              ListTile(
-                title: Text("Preço",
-                    style:
-                    TextStyle(fontWeight: FontWeight.bold)),
-              ),
-              ListTile(
-                title: Text('R\$ ${_productDetail.offerPrice}',
-                    style: TextStyle(fontWeight: FontWeight.w500)),
-                subtitle: Text('À vista'),
-                leading: Icon(
-                  Icons.attach_money,
-                  color: Colors.amberAccent,
-                ),
-              ),
-              Divider(),
-              ListTile(
-                title: Text('R\$ ${_productDetail.price}',
-                    style: TextStyle(fontWeight: FontWeight.w500)),
-                subtitle: Text('No Cartão de Créditos'),
-                leading: Icon(
-                  Icons.credit_card,
-                  color: Colors.lightBlueAccent,
-                ),
-              ),
-            ])));
+            child: Container(
+                padding: EdgeInsets.all(16),
+                child: Column(children: [
+                  Row(
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          style: DefaultTextStyle.of(context).style,
+                          children: <TextSpan>[
+                            TextSpan(text: "DE ", style: TextStyle(fontWeight: FontWeight.bold)),
+                            TextSpan(text: 'R\$ ${_productDetail.price}',
+                                style: TextStyle( decoration: TextDecoration.lineThrough, fontWeight: FontWeight.bold)),
+                            TextSpan(text: ' POR', style: TextStyle(fontWeight: FontWeight.bold))]))]
+                  ),
+                  Row(
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          style: DefaultTextStyle.of(context).style,
+                          children: <TextSpan>[
+                            TextSpan(text: 'R\$ ${_productDetail.offerPrice}',
+                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.green[700])),
+                            TextSpan(text: ' à vista',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.green[700]))]))]
+                  ),
+                  Row(
+                  children: [
+                    Icon(CustomIcons.barcode),
+                    Text(' R\$ ${_productDetail.offerPrice} no boleto. 15% de desconto')]
+                  ),
+                  Row(
+                      children: [
+                        Icon(Icons.credit_card, size: 25,),
+                        Text(' R\$ ${_productDetail.price} em até 12x')]
+                  ),
+                ]))));
   }
 
   Widget _buildDescriptionCard() {
-    return SizedBox(
+    return Container(
+        padding: EdgeInsets.all(8),
+        color: Colors.grey[200],
         child: Card(
             child: Column(
               children: [
@@ -134,7 +154,9 @@ class AppProductDetailState extends State<AppProductDetail> {
                   title: _handleDescription(_isExpanded),
                 ),
               ],
-            )));
+            )
+        )
+    );
   }
 
   Widget _handleDescription(bool expanded) {

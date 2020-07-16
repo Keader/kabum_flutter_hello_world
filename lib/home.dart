@@ -183,7 +183,7 @@ class AppHomeState extends State<AppHome> {
     );
   }
 
-  Widget _getProgressBar() => _isLoading ? LinearProgressIndicator(backgroundColor: Colors.blue, valueColor: AlwaysStoppedAnimation<Color>(Colors.cyan),) : Container();
+  Widget _getProgressBar() => _isLoading ? LinearProgressIndicator(backgroundColor: Colors.blue[700], valueColor: AlwaysStoppedAnimation<Color>(Colors.cyanAccent)) : Container();
 
   Widget _buildListView() {
     return ListView.separated(

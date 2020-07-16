@@ -109,7 +109,7 @@ class AppsSearchState extends State<AppsSearch> {
     if (_timer?.isActive == true) {
       _timer.cancel();
     }
-    _timer = Timer(const Duration(seconds: 2), () {
+    _timer = Timer(const Duration(seconds: 3), () {
       if (text.isNotEmpty) {
         setState(() {
           _hasSearchInProgress = true;
@@ -142,11 +142,11 @@ class AppsSearchState extends State<AppsSearch> {
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: "Buscar...",
-              hintStyle: TextStyle(fontSize: 16.0, color: Colors.lightBlue),
-              icon: Icon(Icons.search, color: Colors.lightBlueAccent)
+              hintStyle: TextStyle(fontSize: 16.0, color: Colors.white),
+              icon: Icon(Icons.search, color: Colors.white)
             ),
             style: TextStyle(
-              color: Colors.lightBlueAccent,
+              color: Colors.white,
               fontSize: 16.0
             ),
           ),
@@ -158,7 +158,7 @@ class AppsSearchState extends State<AppsSearch> {
   Widget _buildSuggestionBody() {
     // Make progress bar animation
     if (_hasSearchInProgress)
-      return LinearProgressIndicator(backgroundColor: Colors.lightBlue);
+      return LinearProgressIndicator(backgroundColor: Colors.blue[700], valueColor: AlwaysStoppedAnimation<Color>(Colors.cyanAccent));
 
     // Make a empty screen (initial search screen)
     if (_suggestions.isEmpty && !_isSubmited)

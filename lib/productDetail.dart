@@ -15,8 +15,9 @@ class ProductDetail {
   final String code;
   final String offerPrice;
   final String description;
+  final String oldprice;
 
-  ProductDetail(this.name, this.price, this.photos, this.code, this.offerPrice, this.description);
+  ProductDetail(this.name, this.price, this.photos, this.code, this.offerPrice, this.description, this.oldprice);
 }
 
 class AppProductDetail extends StatefulWidget {
@@ -44,23 +45,23 @@ class AppProductDetailState extends State<AppProductDetail> {
 
     return Scaffold(
         body: Container(
-      child: ListView(children: [
-        Column(children: [
-          Container(child: _buildSlider(), color: Colors.white),
-          _buildPriceCard(),
-          _buildDescriptionCard()
-        ], mainAxisAlignment: MainAxisAlignment.start),
-      ]),
-      color: Colors.grey[200],
-    ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          ///TODO: Make watch page
-        },
-        label: Text('Observar'),
-        icon: Icon(Icons.remove_red_eye),
-        backgroundColor: Colors.deepOrange,
-      ));
+          color: Colors.grey[200],
+          child: ListView(children: [
+            Column(children: [
+              Container(child: _buildSlider(), color: Colors.white),
+              _buildPriceCard(),
+              _buildDescriptionCard()
+            ], mainAxisAlignment: MainAxisAlignment.end),
+          ]),
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            ///TODO: Make watch page
+          },
+          label: Text('Observar'),
+          icon: Icon(Icons.remove_red_eye),
+          backgroundColor: Colors.deepOrange,
+        ));
   }
 
   Widget _buildSlider() {
@@ -101,7 +102,7 @@ class AppProductDetailState extends State<AppProductDetail> {
                           style: DefaultTextStyle.of(context).style,
                           children: <TextSpan>[
                             TextSpan(text: "DE ", style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(text: 'R\$ ${_productDetail.price}',
+                            TextSpan(text: 'R\$ ${_productDetail.oldprice}',
                                 style: TextStyle( decoration: TextDecoration.lineThrough, fontWeight: FontWeight.bold)),
                             TextSpan(text: ' POR', style: TextStyle(fontWeight: FontWeight.bold))]))]
                   ),
@@ -178,13 +179,13 @@ class AppProductDetailState extends State<AppProductDetail> {
       convertedPhotos.add(element.toString());
     });
     String code = data['codigo'].toString();
-    String offerPrice = data['preco_desconto'].toString();
+    String offerPrice = data['preco_desconto'].toStringAsFixed(2);
     String description = data['produto_html'];
+    String oldPrice = data['preco_antigo'].toStringAsFixed(2);
 
     Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
-        _productDetail = ProductDetail(
-            name, price, convertedPhotos, code, offerPrice, description);
+        _productDetail = ProductDetail(name, price, convertedPhotos, code, offerPrice, description, oldPrice);
       });
     });
   }

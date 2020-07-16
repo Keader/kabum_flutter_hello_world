@@ -60,10 +60,10 @@ class AppHomeState extends State<AppHome> {
               height: 55.0,
               child: TabBar (
                 tabs: [
-                  Tab(icon: Icon(Icons.add_shopping_cart, color: Colors.orange,), text: "Promoções",),
-                  Tab(icon: Icon(Icons.remove_red_eye, color: Colors.tealAccent), text: "Observados"),
+                  Tab(icon: Icon(Icons.add_shopping_cart, color: Colors.blue[200],), text: "Promoções",),
+                  Tab(icon: Icon(Icons.remove_red_eye, color: Colors.blue[200]), text: "Observados"),
                 ],
-                unselectedLabelColor: Colors.cyan[200],
+                unselectedLabelColor: Colors.white60,
                 labelColor: Colors.white,
                 indicatorColor: Colors.transparent,
               ),
@@ -204,7 +204,7 @@ class AppHomeState extends State<AppHome> {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontWeight: FontWeight.bold)),
               subtitle: Text("Preço: R\$ " + _products.elementAt(index).price),
-              trailing: Icon(Icons.shopping_cart, color: Colors.lightBlue),
+              trailing: Icon(Icons.shopping_basket, color: Colors.deepOrange),
               onTap: () {
                 _getProductDetail(_products.elementAt(index));
               });

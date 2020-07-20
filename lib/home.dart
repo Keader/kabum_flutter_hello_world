@@ -57,11 +57,11 @@ class AppHomeState extends State<AppHome> {
           child: Scaffold(
             backgroundColor: Colors.blue,
             bottomNavigationBar: Container (
-              height: 55.0,
+              height: 52.0,
               child: TabBar (
                 tabs: [
-                  Tab(icon: Icon(Icons.add_shopping_cart, color: Colors.blue[200],), text: "Promoções",),
-                  Tab(icon: Icon(Icons.remove_red_eye, color: Colors.blue[200]), text: "Observados"),
+                  Tab(icon: Icon(Icons.add_shopping_cart, color: Colors.blue[200],), text: "Promoções", iconMargin: EdgeInsets.all(5)),
+                  Tab(icon: Icon(Icons.remove_red_eye, color: Colors.blue[200]), text: "Observados", iconMargin: EdgeInsets.all(5)),
                 ],
                 unselectedLabelColor: Colors.white60,
                 labelColor: Colors.white,
@@ -154,7 +154,7 @@ class AppHomeState extends State<AppHome> {
     for (int i = 0; i < list.length; ++i){
       dynamic entry = list[i];
       String name = entry['produto'];
-      double priceDouble = entry['vlr_oferta'];
+      double priceDouble = entry['vlr_oferta'].runtimeType == double ? entry['vlr_oferta'] : entry['vlr_oferta'].toDouble();
       String price = priceDouble.toStringAsFixed(2);
       String photo = entry['imagem'];
       String code = entry['codigo'].toString();

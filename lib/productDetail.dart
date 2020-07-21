@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:kabumflutterhelloworld/watchButtomSheet.dart';
 import 'package:lottie/lottie.dart';
 
 import 'custom/custom_icons.dart';
@@ -55,11 +56,9 @@ class AppProductDetailState extends State<AppProductDetail> {
           ]),
         ),
         floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            ///TODO: Make watch page
-          },
-          label: Text('Observar'),
-          icon: Icon(Icons.remove_red_eye),
+          onPressed: () => WatchButtonSheet(int.parse(_productDetail.code)).mainBottomSheet(context),
+          label: Text('Notifique-me'),
+          icon: Icon(Icons.notifications_active),
           backgroundColor: Colors.deepOrange,
         ));
   }

@@ -4,9 +4,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:kabumflutterhelloworld/Database/database.dart';
 import 'package:kabumflutterhelloworld/productDetail.dart';
 import 'package:kabumflutterhelloworld/search.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
 import 'kabum_privateAPI/kabum_api/Kabum.dart';
 
@@ -26,7 +28,23 @@ class Product {
   }
 }
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  AppDatabase db = await $FloorAppDatabase
+      .databaseBuilder('kabum_flutter.db')
+      .build();
+
+  runApp(
+      MultiProvider(
+        providers: [
+          Provider<DB>(create: (_) => DB(db)),
+        ],
+        child: MyApp(),
+      ),
+  );
+
+}
 
 class MyApp extends StatelessWidget {
   @override

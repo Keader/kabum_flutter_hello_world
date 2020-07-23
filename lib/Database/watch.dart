@@ -4,8 +4,7 @@ import 'package:floor/floor.dart';
 class Watch {
   @primaryKey
   final int id;
-
-  int price;
+  double price;
   int flags;
 
   Watch(this.id, this.price, this.flags);

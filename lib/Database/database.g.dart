@@ -80,7 +80,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Watch` (`id` INTEGER, `price` INTEGER, `flags` INTEGER, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `Watch` (`id` INTEGER, `price` REAL, `flags` INTEGER, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -113,7 +113,7 @@ class _$WatchDao extends WatchDao {
   final QueryAdapter _queryAdapter;
 
   static final _watchMapper = (Map<String, dynamic> row) =>
-      Watch(row['id'] as int, row['price'] as int, row['flags'] as int);
+      Watch(row['id'] as int, row['price'] as double, row['flags'] as int);
 
   final InsertionAdapter<Watch> _watchInsertionAdapter;
 

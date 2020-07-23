@@ -94,14 +94,25 @@ class WatchButtonSheet {
       alignment: WrapAlignment.center,
       spacing: 50,
       children: <Widget>[
-        FlatButton(
-          child: Text('Ok'),
-          color: Colors.deepOrange,
-          onPressed: () { _handleOkButton(); }),
-        FlatButton(
-          child: Text('Cancelar'),
-          color: Colors.deepOrange,
-          onPressed: () => Navigator.pop(_context)),
+        Container(
+            width: 150,
+            height: 48,
+            child: MaterialButton(
+              elevation: 0.0,
+              color: Colors.white,
+              child: Text('Cancelar', style: TextStyle(color: Colors.blue)),
+              shape: StadiumBorder(side: BorderSide(color: Colors.blue, width: 2)),
+              onPressed: () => Navigator.pop(_context)
+            )),
+        Container(
+            width: 150,
+            height: 48,
+            child: MaterialButton(
+              color: Colors.blue,
+              child: Text('Confirmar', style: TextStyle(color: Colors.white)),
+              shape: StadiumBorder(),
+              onPressed: () => _handleOkButton()
+            ))
       ],
     );
   }
@@ -149,14 +160,12 @@ class WatchButtonSheet {
   }
 
   Future<void> _handleOkButton() async {
-
     if (_valueBelowMark && !_isValidForm) {
       return;
     }
 
     Navigator.pop(_context);
     WatchDao db = Provider.of<DB>(_context, listen: false).watchDB;
-
     // nothing marked, so delete everything
     if (!_offerTileMark && !_stockTileMark && !_valueBelowMark) {
       db.deleteById(_id);
@@ -181,10 +190,8 @@ class WatchButtonSheet {
 
     _textController.dispose();
     db.insertWatch(Watch(_id, price, flags));
-
   }
 
-  // Navigator.pop(context);
   List<Widget> _buildContent() {
     List<Widget> list = List();
     list.add(_offerTile);
@@ -193,6 +200,7 @@ class WatchButtonSheet {
     if (_valueBelowMark)
       list.add(_buildTextField());
     list.add(_buildButtons());
+    list.add(Container(padding: EdgeInsets.all(8)));
     return list;
   }
 }

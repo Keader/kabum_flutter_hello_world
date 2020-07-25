@@ -135,7 +135,7 @@ class _$WatchDao extends WatchDao {
   }
 
   @override
-  Future<void> deleteAllPersons() async {
+  Future<void> deleteAllWatchs() async {
     await _queryAdapter.queryNoReturn('DELETE FROM Watch');
   }
 

@@ -78,14 +78,6 @@ class AppProductDetailState extends State<AppProductDetail> {
     );
   }
 
-  Widget _buildProductName() {
-    return Text(_productDetail.name,
-        maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
-        textAlign: TextAlign.center);
-  }
-
   Widget _buildPriceCard() {
     return Container(
         padding: EdgeInsets.all(8),
@@ -134,36 +126,28 @@ class AppProductDetailState extends State<AppProductDetail> {
         color: Colors.grey[200],
         child: Card(
             child: Column(
-              children: [
-                ListTile(
-                  title: Text("Descrição: ",
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  trailing: IconButton(
-                    icon:
-                    Icon(_isExpanded ? Icons.arrow_drop_up : Icons
-                        .arrow_drop_down),
-                    onPressed: () {
-                      setState(() {
-                        _isExpanded = !_isExpanded;
-                      });
-                    },
-                  ),
-                ),
-                Divider(),
-                ListTile(
-                  title: _handleDescription(_isExpanded),
-                ),
-              ],
-            )
-        )
-    );
+          children: [
+            ListTile(
+              title: Text("Descrição: ", style: TextStyle(fontWeight: FontWeight.bold)),
+              trailing: IconButton(
+                icon: Icon(_isExpanded ? Icons.arrow_drop_up : Icons.arrow_drop_down),
+                onPressed: () {
+                  setState(() { _isExpanded = !_isExpanded; });
+                },
+              ),
+            ),
+            Divider(),
+            ListTile(title: _handleDescription(_isExpanded)),
+          ],
+        )));
   }
 
   Widget _handleDescription(bool expanded) {
     if (!expanded)
       return Container();
 
-    return Html(data: _productDetail.description);
+    //PS: Iframe = videos
+    return Html(data: _productDetail.description, blacklistedElements: ['iframe']);
   }
 
   void _getProductDetail() async {

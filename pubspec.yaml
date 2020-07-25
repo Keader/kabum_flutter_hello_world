@@ -43,6 +43,8 @@ flutter:
   assets:
     - assets/explosion2.json
     - assets/load_detail.json
+    - assets/load_favorite.json
+    - assets/error.json
   fonts:
     - family: CustomIcons
       fonts:

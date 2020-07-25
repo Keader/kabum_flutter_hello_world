@@ -3,6 +3,7 @@ import 'package:kabumflutterhelloworld/Database/database.dart';
 import 'package:provider/provider.dart';
 
 import 'Database/watch.dart';
+import 'notificationPage.dart';
 
 class WatchButtonSheet {
   final int _id;
@@ -17,6 +18,7 @@ class WatchButtonSheet {
   bool _isValidForm = false;
   bool _needDBLoad = true;
   final _textController = TextEditingController();
+  NotificationPageState _notificationPage;
 
   static const FLAG_OFFER = 1;
   static const FLAG_STOCK = 2;
@@ -24,7 +26,8 @@ class WatchButtonSheet {
 
   WatchButtonSheet(this._id);
 
-  void mainBottomSheet(BuildContext context) {
+  void mainBottomSheet(BuildContext context, [NotificationPageState notificationPage]) {
+    _notificationPage = notificationPage;
     _context = context;
     showModalBottomSheet(
         isDismissible: false,
@@ -54,6 +57,7 @@ class WatchButtonSheet {
       _offerTileMark = watch.flags & FLAG_OFFER != 0 ? true : false;
       _stockTileMark = watch.flags & FLAG_STOCK != 0 ? true : false;
       _valueBelowMark = watch.flags & FLAG_PRICE != 0 ? true : false;
+      _textController.text = watch.price.toString();
     });
   }
 
@@ -188,8 +192,9 @@ class WatchButtonSheet {
         return;
     }
 
-    _textController.dispose();
-    db.insertWatch(Watch(_id, price, flags));
+    Watch watch = Watch(_id, price, flags);
+    db.insertWatch(watch);
+    _notificationPage?.updateInterface();
   }
 
   List<Widget> _buildContent() {

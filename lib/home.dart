@@ -10,6 +10,7 @@ import 'package:kabumflutterhelloworld/search.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
+import 'notificationPage.dart';
 import 'kabum_privateAPI/kabum_api/Kabum.dart';
 
 class Product {
@@ -67,6 +68,7 @@ class AppHomeState extends State<AppHome> {
   int _currentPage = 1;
   final ScrollController _scrollController = ScrollController();
   bool _isLoading = false;
+  AppBar _appBar;
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +81,7 @@ class AppHomeState extends State<AppHome> {
               child: TabBar (
                 tabs: [
                   Tab(icon: Icon(Icons.add_shopping_cart, color: Colors.blue[200],), text: "Promoções", iconMargin: EdgeInsets.all(5)),
-                  Tab(icon: Icon(Icons.remove_red_eye, color: Colors.blue[200]), text: "Observados", iconMargin: EdgeInsets.all(5)),
+                  Tab(icon: Icon(Icons.notifications, color: Colors.blue[200]), text: "Notificações", iconMargin: EdgeInsets.all(5)),
                 ],
                 unselectedLabelColor: Colors.white60,
                 labelColor: Colors.white,
@@ -89,30 +91,32 @@ class AppHomeState extends State<AppHome> {
             body: TabBarView(
               children: [
                 _buildPromotionHome(),
-                _buildFavoritePage(),
+                _buildNotificationPage(),
               ],
             ),
           ),
     );
   }
 
-  Widget _buildFavoritePage() {
-    return Center( child: Text("Not Implemented Yet <3"));
+  Widget _buildNotificationPage() {
+    return NotificationPage(_appBar);
   }
 
   Widget _buildPromotionHome() {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Container(
-          height: 130.0,
-          width: 130.0,
-          child: Image.network('https://static.kabum.com.br/conteudo/temas/001/imagens/topo/logo_kabum_.png'),
-        ),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.search), onPressed: _pushSearch),
-        ],
+    _appBar = AppBar(
+      centerTitle: true,
+      title: Container(
+        height: 130.0,
+        width: 130.0,
+        child: Image.network('https://static.kabum.com.br/conteudo/temas/001/imagens/topo/logo_kabum_.png'),
       ),
+      actions: <Widget>[
+        IconButton(icon: Icon(Icons.search), onPressed: _pushSearch),
+      ],
+    );
+
+    return Scaffold(
+      appBar: _appBar,
       body: _buildHome(),
     );
   }

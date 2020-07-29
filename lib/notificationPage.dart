@@ -58,7 +58,7 @@ class NotificationPageState extends State<NotificationPage> {
   void _loadProducts() async {
     WatchDao db = Provider.of<DB>(context, listen: false).watchDB;
     List<Watch> watchs = await db.findAllWatchs();
-    if (watchs.isEmpty && !error) {
+    if (watchs.isEmpty && !error && mounted) {
       setState(() => error = true);
       return;
     }
@@ -68,6 +68,9 @@ class NotificationPageState extends State<NotificationPage> {
       _products.add(product);
     }
 
+    if (!mounted)
+      return;
+
     setState(() {
       error = false;
       _watchs = watchs;
@@ -75,7 +78,7 @@ class NotificationPageState extends State<NotificationPage> {
   }
 
   Future<ProductDetail> _getProductDetail(int productId) async {
-    Response resp = await Dio().get(Dictionary.productDetailEndPoint + productId.toString());
+    Response resp = await Dio().get(Dictionary.product_detail_endpoint + productId.toString());
     dynamic data = resp.data;
 
     String name = data['nome'];

@@ -52,7 +52,7 @@ class AppsSearchState extends State<AppsSearch> {
   }
 
   void _getSuggestions(String text) async {
-    String url = Dictionary.autoCompleteEndPoint + text +"&limite=10";
+    String url = Dictionary.auto_complete_endpoint + text +"&limite=10";
     Response resp = await Dio().get(url);
     _suggestions.clear();
     List<dynamic> list = resp.data['produtos'];
@@ -74,13 +74,13 @@ class AppsSearchState extends State<AppsSearch> {
       if (showProgressBar) _hasSearchInProgress = true;
     });
 
-    String finalEndPoint = Dictionary.searchEndPoint + _searchWord + "&pagina="+_currentPage.toString();
+    String finalEndPoint = Dictionary.search_endpoint + _searchWord + "&pagina="+_currentPage.toString();
     Response resp = await Dio().get(finalEndPoint);
     bool isRedirect = false;
 
     if (resp.data['redirect'].length != 0) {
       String redirectTarget = resp.data['redirect'].join('/');
-      String url = Dictionary.listEndPoint + redirectTarget + "?" + "pagina=" + _currentPage.toString();
+      String url = Dictionary.list_endpoint + redirectTarget + "?" + "pagina=" + _currentPage.toString();
       resp = await Dio().get(url);
       isRedirect = true;
     }

@@ -1,7 +1,4 @@
-// Copyright 2018 The Flutter team. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:kabumflutterhelloworld/Database/database.dart';
@@ -10,6 +7,7 @@ import 'package:kabumflutterhelloworld/search.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
+import 'notification/firebaseNotification.dart';
 import 'notificationPage.dart';
 import 'kabum_privateAPI/kabum_api/Kabum.dart';
 
@@ -40,6 +38,7 @@ void main() async {
       MultiProvider(
         providers: [
           Provider<DB>(create: (_) => DB(db)),
+          Provider<FirebaseNotification>(create: (_) => FirebaseNotification()),
         ],
         child: MyApp(),
       ),
@@ -69,6 +68,26 @@ class AppHomeState extends State<AppHome> {
   final ScrollController _scrollController = ScrollController();
   bool _isLoading = false;
   AppBar _appBar;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Handle with page scrolldown
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+        // Loading already in progress
+        if (_isLoading)
+          return;
+        // Check if we got the max pages already
+        if (_currentPage < _maxPages)
+          ++_currentPage;
+
+        setState(() { _isLoading = true; });
+        _getProducts();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,26 +138,6 @@ class AppHomeState extends State<AppHome> {
       appBar: _appBar,
       body: _buildHome(),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    // Handle with page scrolldown
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-        // Loading already in progress
-        if (_isLoading)
-          return;
-        // Check if we got the max pages already
-        if (_currentPage < _maxPages)
-          ++_currentPage;
-
-        setState(() { _isLoading = true; });
-        _getProducts();
-      }
-    });
   }
 
   @override

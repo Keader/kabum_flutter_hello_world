@@ -151,7 +151,7 @@ class AppProductDetailState extends State<AppProductDetail> {
   }
 
   void _getProductDetail() async {
-    Response resp = await Dio().get(Dictionary.productDetailEndPoint + widget.code);
+    Response resp = await Dio().get(Dictionary.product_detail_endpoint + widget.code);
     dynamic data = resp.data;
 
     String name = data['nome'];

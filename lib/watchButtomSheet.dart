@@ -68,7 +68,7 @@ class WatchButtonSheet {
         onChanged: (bool value) {
           setState(() { _offerTileMark = value; });
         },
-        secondary: Icon(Icons.local_offer, color: Colors.blue),
+        secondary: Icon(Icons.local_offer, color: _offerTileMark ? Colors.blue : Colors.grey),
       activeColor: Colors.deepOrange,
     );
 
@@ -78,7 +78,7 @@ class WatchButtonSheet {
         onChanged: (bool value) {
           setState(() { _stockTileMark = value; });
         },
-        secondary: Icon(Icons.add_shopping_cart, color: Colors.green[800]),
+        secondary: Icon(Icons.add_shopping_cart, color: _stockTileMark ? Colors.blue : Colors.grey),
       activeColor: Colors.deepOrange,
     );
 
@@ -88,7 +88,7 @@ class WatchButtonSheet {
       onChanged: (bool value) {
         setState(() { _valueBelowMark = value; });
       },
-      secondary: Icon(Icons.attach_money, color: Colors.amber),
+      secondary: Icon(Icons.attach_money, color: _valueBelowMark ? Colors.blue : Colors.grey),
       activeColor: Colors.deepOrange,
     );
   }
@@ -157,7 +157,7 @@ class WatchButtonSheet {
     );
 
     return ListTile(
-      leading: Icon(Icons.monetization_on, color: Colors.teal),
+      leading: Icon(Icons.monetization_on, color: Colors.blue),
       title: Text("Valor: ", style: TextStyle(fontWeight: FontWeight.bold)),
       trailing: SizedBox(child: _priceField, width: 75),
     );

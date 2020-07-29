@@ -130,10 +130,10 @@ class NotificationPageState extends State<NotificationPage> {
       items.add(Icon(Icons.local_offer, color: Colors.blue));
 
     if (watch.flags & WatchButtonSheet.FLAG_STOCK != 0)
-      items.add(Icon(Icons.add_shopping_cart, color: Colors.green[800]));
+      items.add(Icon(Icons.add_shopping_cart, color: Colors.blue));
 
     if (watch.flags & WatchButtonSheet.FLAG_PRICE != 0) {
-      items.add(Icon(Icons.attach_money, color: Colors.amber));
+      items.add(Icon(Icons.attach_money, color: Colors.blue));
       items.add(Text('R\$ ${watch.price}'));
     }
 

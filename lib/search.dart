@@ -55,6 +55,13 @@ class AppsSearchState extends State<AppsSearch> {
     String url = Dictionary.auto_complete_endpoint + text +"&limite=10";
     Response resp = await Dio().get(url);
     _suggestions.clear();
+    if (resp.data.isEmpty) {
+      setState(() {
+        _hasSearchInProgress = false;
+        _isSubmited = false;
+      });
+      return;
+    }
     List<dynamic> list = resp.data['produtos'];
     for (int i = 0; i < list.length; ++i){
       dynamic entry = list[i];
@@ -109,7 +116,7 @@ class AppsSearchState extends State<AppsSearch> {
     if (_timer?.isActive == true) {
       _timer.cancel();
     }
-    _timer = Timer(const Duration(seconds: 3), () {
+    _timer = Timer(const Duration(seconds: 2), () {
       if (text.isNotEmpty) {
         setState(() {
           _hasSearchInProgress = true;

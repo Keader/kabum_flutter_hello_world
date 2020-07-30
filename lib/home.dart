@@ -1,4 +1,3 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:kabumflutterhelloworld/Database/database.dart';
@@ -7,7 +6,6 @@ import 'package:kabumflutterhelloworld/search.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
-import 'notification/firebaseNotification.dart';
 import 'notificationPage.dart';
 import 'kabum_privateAPI/kabum_api/Kabum.dart';
 
@@ -38,7 +36,6 @@ void main() async {
       MultiProvider(
         providers: [
           Provider<DB>(create: (_) => DB(db)),
-          Provider<FirebaseNotification>(create: (_) => FirebaseNotification()),
         ],
         child: MyApp(),
       ),

@@ -6,6 +6,7 @@ import 'package:kabumflutterhelloworld/search.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
+import 'notification/localNotification.dart';
 import 'notificationPage.dart';
 import 'kabum_privateAPI/kabum_api/Kabum.dart';
 
@@ -36,6 +37,7 @@ void main() async {
       MultiProvider(
         providers: [
           Provider<DB>(create: (_) => DB(db)),
+          Provider<LocalNotification>(create: (_) => LocalNotification())
         ],
         child: MyApp(),
       ),

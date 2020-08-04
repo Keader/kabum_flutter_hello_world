@@ -17,8 +17,9 @@ class ProductDetail {
   final String offerPrice;
   final String description;
   final String oldprice;
+  final bool available;
 
-  ProductDetail(this.name, this.price, this.photos, this.code, this.offerPrice, this.description, this.oldprice);
+  ProductDetail(this.name, this.price, this.photos, this.code, this.offerPrice, this.description, this.oldprice, this.available);
 }
 
 class AppProductDetail extends StatefulWidget {
@@ -117,6 +118,11 @@ class AppProductDetailState extends State<AppProductDetail> {
                         Icon(Icons.credit_card, size: 25,),
                         Text(' R\$ ${_productDetail.price} em até 12x')]
                   ),
+                  Row(
+                      children: [
+                        Text('Disponibilidade:'),
+                        _productDetail.available ? Container(child: Lottie.asset('assets/checked.json'), width: 80, height: 80) : Container(child: Lottie.asset('assets/unchecked.json'), width: 90, height: 90)]
+                  ),
                 ]))));
   }
 
@@ -165,10 +171,11 @@ class AppProductDetailState extends State<AppProductDetail> {
     String offerPrice = data['preco_desconto'].toStringAsFixed(2);
     String description = data['produto_html'];
     String oldPrice = data['preco_antigo'].toStringAsFixed(2);
+    bool available = data['disponibilidade'];
 
     Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
-        _productDetail = ProductDetail(name, price, convertedPhotos, code, offerPrice, description, oldPrice);
+        _productDetail = ProductDetail(name, price, convertedPhotos, code, offerPrice, description, oldPrice, available);
       });
     });
   }

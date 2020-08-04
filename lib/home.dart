@@ -17,13 +17,6 @@ class Product {
   final String code;
 
   Product(this.name, this.price, this.photo, this.code);
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) || other is Product &&
-          runtimeType == other.runtimeType &&
-          code == other.code;
-  }
 }
 
 void main() async {

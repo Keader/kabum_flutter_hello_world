@@ -1,11 +1,12 @@
+import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:kabumflutterhelloworld/Database/database.dart';
+import 'package:kabumflutterhelloworld/appDB/appDatabase.dart';
+import 'package:kabumflutterhelloworld/appDB/watch.dart';
 import 'package:kabumflutterhelloworld/productDetail.dart';
 import 'package:kabumflutterhelloworld/search.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-
 import 'notification/localNotification.dart';
 import 'notificationPage.dart';
 import 'kabum_privateAPI/kabum_api/Kabum.dart';
@@ -26,6 +27,9 @@ void main() async {
       .databaseBuilder('kabum_flutter.db')
       .build();
 
+  List<Watch> watches = await db.watchDao.findAllWatchs();
+  watches.isNotEmpty ? setupService() : BackgroundFetch.stop();
+
   runApp(
       MultiProvider(
         providers: [
@@ -35,8 +39,37 @@ void main() async {
         child: MyApp(),
       ),
   );
-
 }
+
+void backgroundFetchHeadlessTask(String taskId) async {
+  print("[BackgroundFetch] Headless event received: $taskId");
+  LocalNotification().showNotification(title: "Teste", body: "Mytest");
+  BackgroundFetch.finish(taskId);
+}
+
+void onBackgroundFetch(String taskId) async {
+  LocalNotification().showNotification(title: "Teste", body: "Mytest");
+  print('_onBackgroundFetch: $taskId');
+  BackgroundFetch.finish(taskId);
+}
+
+void setupService() async {
+  await BackgroundFetch.configure(BackgroundFetchConfig(
+    minimumFetchInterval: 15,
+    forceAlarmManager: false,
+    stopOnTerminate: false,
+    startOnBoot: true,
+    enableHeadless: true,
+    requiresBatteryNotLow: false,
+    requiresCharging: false,
+    requiresStorageNotLow: false,
+    requiresDeviceIdle: false,
+    requiredNetworkType: NetworkType.ANY,
+  ), onBackgroundFetch);
+
+  BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
+}
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -219,7 +252,15 @@ class AppHomeState extends State<AppHome> {
               subtitle: Text("Preço: R\$ " + _products.elementAt(index).price),
               trailing: Icon(Icons.shopping_basket, color: Colors.deepOrange),
               onTap: () {
-                _getProductDetail(_products.elementAt(index));
+                //_getProductDetail(_products.elementAt(index));
+                BackgroundFetch.scheduleTask(TaskConfig(
+                    taskId: "MyCustomEvent",
+                    delay: 10000,
+                    periodic: false,
+                    forceAlarmManager: false,
+                    stopOnTerminate: false,
+                    enableHeadless: true
+                ));
               });
         });
   }

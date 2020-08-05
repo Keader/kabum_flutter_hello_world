@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kabumflutterhelloworld/Database/database.dart';
+import 'package:kabumflutterhelloworld/appDB/appDatabase.dart';
+import 'package:kabumflutterhelloworld/appDB/watch.dart';
 import 'package:provider/provider.dart';
-
-import 'Database/watch.dart';
 import 'notificationPage.dart';
 
 class WatchButtonSheet {

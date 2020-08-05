@@ -14,7 +14,7 @@ packages:
       name: analyzer
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.39.15"
+    version: "0.39.16"
   archive:
     dependency: transitive
     description:
@@ -36,6 +36,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.1"
+  background_fetch:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "8c03a2b332b3f89b0e9b982bec0987b4fca8f65c"
+      url: "https://github.com/transistorsoft/flutter_background_fetch"
+    source: git
+    version: "0.6.0"
   boolean_selector:
     dependency: transitive
     description:

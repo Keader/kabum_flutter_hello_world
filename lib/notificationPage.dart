@@ -2,12 +2,12 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:kabumflutterhelloworld/Database/database.dart';
+import 'package:kabumflutterhelloworld/appDB/appDatabase.dart';
+import 'package:kabumflutterhelloworld/appDB/watch.dart';
 import 'package:kabumflutterhelloworld/productDetail.dart';
 import 'package:kabumflutterhelloworld/watchButtomSheet.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-import 'Database/watch.dart';
 import 'kabum_privateAPI/kabum_api/Kabum.dart';
 
 class NotificationPage extends StatefulWidget {

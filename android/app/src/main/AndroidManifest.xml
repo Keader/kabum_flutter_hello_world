@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="dev.keader.kabumflutterhelloworld">
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -7,7 +8,9 @@
          FlutterApplication and put your custom class here. -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
+        tools:replace="android:label"
         android:name="io.flutter.app.FlutterApplication"
         android:label="kabumflutterhelloworld"
         android:icon="@mipmap/ic_launcher">

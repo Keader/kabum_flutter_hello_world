@@ -27,8 +27,10 @@ void main() async {
       .databaseBuilder('kabum_flutter.db')
       .build();
 
-  List<Watch> watches = await db.watchDao.findAllWatchs();
-  watches.isNotEmpty ? setupService() : BackgroundFetch.stop();
+  //List<Watch> watches = await db.watchDao.findAllWatchs();
+  //watches.isNotEmpty ? setupService() : BackgroundFetch.stop();
+
+  BackgroundFetch.stop();
 
   runApp(
       MultiProvider(
@@ -42,13 +44,28 @@ void main() async {
 }
 
 void backgroundFetchHeadlessTask(String taskId) async {
-  print("[BackgroundFetch] Headless event received: $taskId");
-  LocalNotification().showNotification(title: "Teste", body: "Mytest");
+
+  switch(taskId) {
+    case 'flutter_background_fetch':
+      {
+        break;
+      }
+    default:
+      break;
+  }
   BackgroundFetch.finish(taskId);
 }
 
 void onBackgroundFetch(String taskId) async {
-  LocalNotification().showNotification(title: "Teste", body: "Mytest");
+  //LocalNotification().showNotification(title: "Teste", body: "Mytest");
+
+  switch(taskId) {
+    case 'flutter_background_fetch':
+      break;
+    default:
+      break;
+  }
+
   print('_onBackgroundFetch: $taskId');
   BackgroundFetch.finish(taskId);
 }
@@ -252,7 +269,8 @@ class AppHomeState extends State<AppHome> {
               subtitle: Text("Preço: R\$ " + _products.elementAt(index).price),
               trailing: Icon(Icons.shopping_basket, color: Colors.deepOrange),
               onTap: () {
-                //_getProductDetail(_products.elementAt(index));
+                _getProductDetail(_products.elementAt(index));
+                /*
                 BackgroundFetch.scheduleTask(TaskConfig(
                     taskId: "MyCustomEvent",
                     delay: 10000,
@@ -260,7 +278,7 @@ class AppHomeState extends State<AppHome> {
                     forceAlarmManager: false,
                     stopOnTerminate: false,
                     enableHeadless: true
-                ));
+                ));*/
               });
         });
   }

@@ -120,7 +120,8 @@ class AppProductDetailState extends State<AppProductDetail> {
                   ),
                   Row(
                       children: [
-                        Text('Disponibilidade:'),
+                        Text('Disponibilidade: '),
+                        Text(_productDetail.available ? 'Disponível' : 'Indisponível', style: TextStyle(fontWeight: FontWeight.bold, color: _productDetail.available ? Colors.green[700] : Colors.red)),
                         _productDetail.available ? Container(child: Lottie.asset('assets/checked.json'), width: 80, height: 80) : Container(child: Lottie.asset('assets/unchecked.json'), width: 90, height: 90)]
                   ),
                 ]))));

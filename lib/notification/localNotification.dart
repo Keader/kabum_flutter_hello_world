@@ -20,7 +20,19 @@ class LocalNotification {
   }
 
   Future _onSelectNotification(String payload) async {
-    print(payload);
+    /*
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          return Scaffold(
+              appBar: AppBar(
+                title: Text(product.name, overflow: TextOverflow.ellipsis),
+              ),
+              body: AppProductDetail(product.code));
+        },
+      ),
+    );*/
+    // TODO: Implement Navigator without a context.
   }
 
   NotificationDetails get _defaultNotification {
@@ -41,7 +53,7 @@ class LocalNotification {
     @required String title,
     @required String body,
     @required NotificationDetails type,
-    int id = 3,
+    int id = 0,
     String payload
   }) =>
       _notifications.show(id, title, body, type, payload: payload);

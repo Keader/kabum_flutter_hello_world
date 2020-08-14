@@ -5,6 +5,7 @@ import 'package:kabumflutterhelloworld/appDB/appDatabase.dart';
 import 'package:kabumflutterhelloworld/appDB/watch.dart';
 import 'package:kabumflutterhelloworld/productDetail.dart';
 import 'package:kabumflutterhelloworld/search.dart';
+import 'package:kabumflutterhelloworld/watchButtomSheet.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'notification/localNotification.dart';
@@ -23,14 +24,10 @@ class Product {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  AppDatabase db = await $FloorAppDatabase
-      .databaseBuilder('kabum_flutter.db')
-      .build();
 
-  //List<Watch> watches = await db.watchDao.findAllWatchs();
-  //watches.isNotEmpty ? setupService() : BackgroundFetch.stop();
-
-  BackgroundFetch.stop();
+  AppDatabase db = await initializeDatabase();
+  List<Watch> watches = await db.watchDao.findAllWatchs();
+  watches.isNotEmpty ? initializeService() : BackgroundFetch.stop();
 
   runApp(
       MultiProvider(
@@ -43,35 +40,111 @@ void main() async {
   );
 }
 
+Future<ProductDetail> _getProductDetail(String productCode) async {
+  Response resp = await Dio().get(Dictionary.product_detail_endpoint + productCode);
+  dynamic data = resp.data;
+
+  // Product is not in store anymore :)
+  if (!data['sucesso'])
+    return ProductDetail("", "", null, "", "", "", "", false, false);
+
+  String name = data['nome'];
+  String price = data['preco'].toString();
+  List<dynamic> photos = data['fotos'];
+  List<String> convertedPhotos = List<String>();
+  photos.forEach((element) {
+    convertedPhotos.add(element.toString());
+  });
+  String code = data['codigo'].toString();
+  String offerPrice = data['preco_desconto'].toStringAsFixed(2);
+  String description = data['produto_html'];
+  String oldPrice = data['preco_antigo'].toStringAsFixed(2);
+  bool available = data['disponibilidade'];
+  bool hasOffer = data['oferta'].isNotEmpty;
+
+  return ProductDetail(name, price, convertedPhotos, code, offerPrice, description, oldPrice, available, hasOffer);
+}
+
+Future<AppDatabase> initializeDatabase() {
+  return $FloorAppDatabase
+      .databaseBuilder('kabum_flutter.db')
+      .build();
+}
+
 void backgroundFetchHeadlessTask(String taskId) async {
+  if (taskId == 'flutter_background_fetch')
+    updateProducts();
+  BackgroundFetch.finish(taskId);
+}
 
-  switch(taskId) {
-    case 'flutter_background_fetch':
-      {
-        break;
+void _onBackgroundFetch(String taskId) async {
+  if (taskId == 'flutter_background_fetch')
+      updateProducts();
+  BackgroundFetch.finish(taskId);
+}
+
+void updateProducts() async {
+  AppDatabase db = await initializeDatabase();
+  WatchDao watchDao = db.watchDao;
+  List<Watch> watches = await watchDao.findAllWatchs();
+
+  if (watches.isEmpty) {
+    // Has no products to watch, disable service :)
+    BackgroundFetch.stop();
+    return;
+  }
+
+  LocalNotification notification = LocalNotification();
+
+  for (Watch watch in watches) {
+      ProductDetail product = await _getProductDetail(watch.id.toString());
+
+      if (product.name.isEmpty) {
+        watchDao.deleteById(watch.id);
+        notification.showNotification(title: "Sad News", body: 'Kabum deletou o produto de id ${watch.id}, que você estava aguardando.');
+        continue;
       }
-    default:
-      break;
+
+      int newFlag = watch.flags;
+      bool offer = false;
+      if (watch.flags & WatchButtonSheet.FLAG_OFFER != 0 && product.hasOffer) {
+        offer = true;
+        newFlag &= ~WatchButtonSheet.FLAG_OFFER;
+      }
+
+      bool stock = false;
+      if (watch.flags & WatchButtonSheet.FLAG_STOCK != 0 && product.available) {
+        stock = true;
+        newFlag &= ~WatchButtonSheet.FLAG_STOCK;
+      }
+
+      bool price = false;
+      if (watch.flags & WatchButtonSheet.FLAG_PRICE != 0 && watch.price <= double.tryParse(product.offerPrice)) {
+        price = true;
+        newFlag &= ~WatchButtonSheet.FLAG_PRICE;
+      }
+
+      // No notification send
+      if (!offer && !stock && !price)
+        continue;
+
+      final int code = int.tryParse(product.code);
+      notification.showNotification(title: product.name, body: "Houve atualização no seu produto.", id: code, payload: product.code);
+
+      // We finish to send notifications
+      if (newFlag == 0) {
+        watchDao.deleteById(watch.id);
+        continue;
+      }
+
+      // Update watch
+      Watch newWatch = Watch(watch.id, watch.price, newFlag);
+      watchDao.insertWatch(newWatch);
   }
-  BackgroundFetch.finish(taskId);
 }
 
-void onBackgroundFetch(String taskId) async {
-  //LocalNotification().showNotification(title: "Teste", body: "Mytest");
-
-  switch(taskId) {
-    case 'flutter_background_fetch':
-      break;
-    default:
-      break;
-  }
-
-  print('_onBackgroundFetch: $taskId');
-  BackgroundFetch.finish(taskId);
-}
-
-void setupService() async {
-  await BackgroundFetch.configure(BackgroundFetchConfig(
+void initializeService() async {
+  int status = await BackgroundFetch.configure(BackgroundFetchConfig(
     minimumFetchInterval: 15,
     forceAlarmManager: false,
     stopOnTerminate: false,
@@ -82,7 +155,7 @@ void setupService() async {
     requiresStorageNotLow: false,
     requiresDeviceIdle: false,
     requiredNetworkType: NetworkType.ANY,
-  ), onBackgroundFetch);
+  ), _onBackgroundFetch);
 
   BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
 }
@@ -270,15 +343,6 @@ class AppHomeState extends State<AppHome> {
               trailing: Icon(Icons.shopping_basket, color: Colors.deepOrange),
               onTap: () {
                 _getProductDetail(_products.elementAt(index));
-                /*
-                BackgroundFetch.scheduleTask(TaskConfig(
-                    taskId: "MyCustomEvent",
-                    delay: 10000,
-                    periodic: false,
-                    forceAlarmManager: false,
-                    stopOnTerminate: false,
-                    enableHeadless: true
-                ));*/
               });
         });
   }

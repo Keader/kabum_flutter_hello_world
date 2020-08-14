@@ -18,8 +18,9 @@ class ProductDetail {
   final String description;
   final String oldprice;
   final bool available;
+  final bool hasOffer;
 
-  ProductDetail(this.name, this.price, this.photos, this.code, this.offerPrice, this.description, this.oldprice, this.available);
+  ProductDetail(this.name, this.price, this.photos, this.code, this.offerPrice, this.description, this.oldprice, this.available, this.hasOffer);
 }
 
 class AppProductDetail extends StatefulWidget {
@@ -173,10 +174,11 @@ class AppProductDetailState extends State<AppProductDetail> {
     String description = data['produto_html'];
     String oldPrice = data['preco_antigo'].toStringAsFixed(2);
     bool available = data['disponibilidade'];
+    bool hasOffer = data['oferta'].isNotEmpty;
 
     Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
-        _productDetail = ProductDetail(name, price, convertedPhotos, code, offerPrice, description, oldPrice, available);
+        _productDetail = ProductDetail(name, price, convertedPhotos, code, offerPrice, description, oldPrice, available, hasOffer);
       });
     });
   }

@@ -1,6 +1,8 @@
+import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:kabumflutterhelloworld/appDB/appDatabase.dart';
 import 'package:kabumflutterhelloworld/appDB/watch.dart';
+import 'package:kabumflutterhelloworld/home.dart';
 import 'package:provider/provider.dart';
 import 'notificationPage.dart';
 
@@ -194,6 +196,8 @@ class WatchButtonSheet {
     Watch watch = Watch(_id, price, flags);
     db.insertWatch(watch);
     _notificationPage?.updateInterface();
+    // Initialize Service (if has none running)
+    initializeService();
   }
 
   List<Widget> _buildContent() {

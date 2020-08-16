@@ -93,7 +93,7 @@ class NotificationPageState extends State<NotificationPage> {
     String description = data['produto_html'];
     String oldPrice = data['preco_antigo'].toStringAsFixed(2);
     bool available = data['disponibilidade'];
-    bool hasOffer = data['oferta'].isNotEmpty;
+    bool hasOffer = data['oferta'] != null ? true : false;
     ProductDetail product = ProductDetail(name, price, convertedPhotos, code, offerPrice, description, oldPrice, available, hasOffer);
     return product;
   }

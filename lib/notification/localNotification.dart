@@ -1,5 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:kabumflutterhelloworld/notification/locator.dart';
+
+import 'navigationService.dart';
+
+class PayloadArguments {
+  final String name;
+  final String code;
+
+  PayloadArguments(this.name, this.code);
+}
 
 class LocalNotification {
   final _notifications = FlutterLocalNotificationsPlugin();
@@ -20,19 +30,10 @@ class LocalNotification {
   }
 
   Future _onSelectNotification(String payload) async {
-    /*
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (BuildContext context) {
-          return Scaffold(
-              appBar: AppBar(
-                title: Text(product.name, overflow: TextOverflow.ellipsis),
-              ),
-              body: AppProductDetail(product.code));
-        },
-      ),
-    );*/
-    // TODO: Implement Navigator without a context.
+    print(payload);
+    List<String> args = payload.split("\$");
+    // Handled in generateRoute method
+    return locator<NavigationService>().navigateTo("AppProductDetail", arguments: PayloadArguments(args.first, args.last));
   }
 
   NotificationDetails get _defaultNotification {

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:kabumflutterhelloworld/appDB/appDatabase.dart';
 import 'package:kabumflutterhelloworld/appDB/watch.dart';
+import 'package:kabumflutterhelloworld/notification/locator.dart';
+import 'package:kabumflutterhelloworld/notification/navigationService.dart';
 import 'package:kabumflutterhelloworld/productDetail.dart';
 import 'package:kabumflutterhelloworld/search.dart';
 import 'package:kabumflutterhelloworld/watchButtomSheet.dart';
@@ -23,8 +25,7 @@ class Product {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-
+  setupLocator();
   AppDatabase db = await initializeDatabase();
   List<Watch> watches = await db.watchDao.findAllWatchs();
   watches.isNotEmpty ? initializeService() : BackgroundFetch.stop();
@@ -60,7 +61,7 @@ Future<ProductDetail> _getProductDetail(String productCode) async {
   String description = data['produto_html'];
   String oldPrice = data['preco_antigo'].toStringAsFixed(2);
   bool available = data['disponibilidade'];
-  bool hasOffer = data['oferta'].isNotEmpty;
+  bool hasOffer = data['oferta'] != null ? true : false;
 
   return ProductDetail(name, price, convertedPhotos, code, offerPrice, description, oldPrice, available, hasOffer);
 }
@@ -166,9 +167,31 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: AppHome(),
+      navigatorKey: locator<NavigationService>().navigatorKey,
+      onGenerateRoute: generateRoute,
     );
   }
 }
+
+// Called when generate route by name
+Route<dynamic> generateRoute(RouteSettings settings) {
+  final PayloadArguments args = settings.arguments;
+  print(settings.name);
+  if (settings.name == "AppProductDetail") {
+    return MaterialPageRoute<void>(
+      builder: (BuildContext context) {
+        return Scaffold(
+            appBar: AppBar(
+              title: Text(args.name, overflow: TextOverflow.ellipsis),
+            ),
+            body: AppProductDetail(args.code));
+      },
+    );
+  }
+  return null;
+}
+
+
 
 class AppHome extends StatefulWidget {
   @override
@@ -343,6 +366,15 @@ class AppHomeState extends State<AppHome> {
               trailing: Icon(Icons.shopping_basket, color: Colors.deepOrange),
               onTap: () {
                 _getProductDetail(_products.elementAt(index));
+                /*
+                int code = int.tryParse(_products.elementAt(index).code);
+                LocalNotification notification = LocalNotification();
+
+                notification.showNotification(title: _products.elementAt(index).name,
+                    body: "Houve atualização no seu produto.",
+                    id: code,
+                    payload: _products.elementAt(index).name+"\$"+_products.elementAt(index).code);*/
+
               });
         });
   }

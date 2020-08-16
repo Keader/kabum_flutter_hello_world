@@ -174,7 +174,7 @@ class AppProductDetailState extends State<AppProductDetail> {
     String description = data['produto_html'];
     String oldPrice = data['preco_antigo'].toStringAsFixed(2);
     bool available = data['disponibilidade'];
-    bool hasOffer = data['oferta'].isNotEmpty;
+    bool hasOffer = data['oferta'] != null ? true : false;
 
     Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {

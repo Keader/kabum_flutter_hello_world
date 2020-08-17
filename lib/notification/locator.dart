@@ -1,9 +1,11 @@
 
 import 'package:get_it/get_it.dart';
+import 'package:kabumflutterhelloworld/notification/localNotification.dart';
 import 'package:kabumflutterhelloworld/notification/navigationService.dart';
 
 GetIt locator = GetIt.instance;
 
 void setupLocator() {
   locator.registerLazySingleton(() => NavigationService());
+  locator.registerLazySingleton(() => LocalNotification());
 }

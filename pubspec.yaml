@@ -23,12 +23,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  dio: 3.0.9 #latest version
-  carousel_slider: ^2.0.0
-  flutter_html: ^1.0.0
-  lottie: ^0.4.0+1
-  floor: ^0.13.0
-  provider: ^4.3.1
+  dio: ^3.0.10
+  carousel_slider: ^2.0.1
+  flutter_html: ^1.0.2
+  lottie: ^0.5.1
+  floor: ^0.14.0
+  provider: ^4.3.2
   flutter_local_notifications: ^1.4.4+3
   background_fetch:
     git:
@@ -38,7 +38,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  floor_generator: ^0.13.0
+  floor_generator: ^0.14.0
   build_runner: ^1.7.3
 
 flutter:

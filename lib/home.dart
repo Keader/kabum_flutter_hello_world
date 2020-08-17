@@ -34,7 +34,6 @@ void main() async {
       MultiProvider(
         providers: [
           Provider<DB>(create: (_) => DB(db)),
-          Provider<LocalNotification>(create: (_) => LocalNotification())
         ],
         child: MyApp(),
       ),
@@ -95,7 +94,7 @@ void updateProducts() async {
     return;
   }
 
-  LocalNotification notification = LocalNotification();
+  LocalNotification notification = locator<LocalNotification>();
 
   for (Watch watch in watches) {
       ProductDetail product = await _getProductDetail(watch.id.toString());
@@ -130,7 +129,10 @@ void updateProducts() async {
         continue;
 
       final int code = int.tryParse(product.code);
-      notification.showNotification(title: product.name, body: "Houve atualização no seu produto.", id: code, payload: product.code);
+      notification.showNotification(title: product.name,
+          body: "Houve atualização no seu produto.",
+          id: code,
+          payload: product.name+"¨"+product.code);
 
       // We finish to send notifications
       if (newFlag == 0) {
@@ -365,15 +367,15 @@ class AppHomeState extends State<AppHome> {
               subtitle: Text("Preço: R\$ " + _products.elementAt(index).price),
               trailing: Icon(Icons.shopping_basket, color: Colors.deepOrange),
               onTap: () {
-                _getProductDetail(_products.elementAt(index));
-                /*
+                //_getProductDetail(_products.elementAt(index));
+
                 int code = int.tryParse(_products.elementAt(index).code);
-                LocalNotification notification = LocalNotification();
+                LocalNotification notification = locator<LocalNotification>();
 
                 notification.showNotification(title: _products.elementAt(index).name,
                     body: "Houve atualização no seu produto.",
                     id: code,
-                    payload: _products.elementAt(index).name+"\$"+_products.elementAt(index).code);*/
+                    payload: _products.elementAt(index).name+"¨"+_products.elementAt(index).code);
 
               });
         });

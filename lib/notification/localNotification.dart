@@ -31,7 +31,7 @@ class LocalNotification {
 
   Future _onSelectNotification(String payload) async {
     print(payload);
-    List<String> args = payload.split("\$");
+    List<String> args = payload.split("¨");
     // Handled in generateRoute method
     return locator<NavigationService>().navigateTo("AppProductDetail", arguments: PayloadArguments(args.first, args.last));
   }

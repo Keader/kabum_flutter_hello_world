@@ -23,9 +23,16 @@ class LocalNotification {
     final settingsIOS = IOSInitializationSettings(
         onDidReceiveLocalNotification: (id, title, body, payload) =>
             _onSelectNotification(payload));
+    final initializationSettingsMacOS = MacOSInitializationSettings(
+        requestAlertPermission: false,
+        requestBadgePermission: false,
+        requestSoundPermission: false);
 
     _notifications.initialize(
-        InitializationSettings(settingsAndroid, settingsIOS),
+        InitializationSettings(
+            android: settingsAndroid,
+            iOS: settingsIOS,
+            macOS: initializationSettingsMacOS),
         onSelectNotification: _onSelectNotification);
   }
 
@@ -36,18 +43,23 @@ class LocalNotification {
     return locator<NavigationService>().navigateTo("AppProductDetail", arguments: PayloadArguments(args.first, args.last));
   }
 
+  Future<NotificationAppLaunchDetails> launchDetails() {
+    return _notifications.getNotificationAppLaunchDetails();
+  }
+
   NotificationDetails get _defaultNotification {
     final androidChannelSpecifics = AndroidNotificationDetails(
       '1',
       'all',
       'send message to all members',
-      importance: Importance.Max,
-      priority: Priority.High,
+      importance: Importance.high,
+      priority: Priority.high,
       ongoing: false,
       autoCancel: true,
     );
     final iOSChannelSpecifics = IOSNotificationDetails();
-    return NotificationDetails(androidChannelSpecifics, iOSChannelSpecifics);
+    final mac = MacOSNotificationDetails();
+    return NotificationDetails(android: androidChannelSpecifics, iOS: iOSChannelSpecifics, macOS: mac);
   }
 
   Future _showNotification({

@@ -29,7 +29,7 @@ dependencies:
   lottie: ^0.5.1
   floor: ^0.14.0
   provider: ^4.3.2
-  flutter_local_notifications: ^1.4.4+3
+  flutter_local_notifications: ^1.5.0-beta.6
   background_fetch:
     git:
       url: https://github.com/transistorsoft/flutter_background_fetch

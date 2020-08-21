@@ -128,6 +128,15 @@ void updateProducts() async {
       if (!offer && !stock && !price)
         continue;
 
+      List<String> bodyList = List();
+      if (offer)
+        bodyList.add(" entrou em promoção");
+      if (stock)
+        bodyList.add(" voltou ao estoque");
+      if (price)
+        bodyList.add(' esta com preço abaixo de ${product.offerPrice}');
+
+      String body = "Seu produto" + bodyList.join(",") +".";
       final int code = int.tryParse(product.code);
       notification.showNotification(title: product.name,
           body: "Houve atualização no seu produto.",
@@ -367,16 +376,7 @@ class AppHomeState extends State<AppHome> {
               subtitle: Text("Preço: R\$ " + _products.elementAt(index).price),
               trailing: Icon(Icons.shopping_basket, color: Colors.deepOrange),
               onTap: () {
-                //_getProductDetail(_products.elementAt(index));
-
-                int code = int.tryParse(_products.elementAt(index).code);
-                LocalNotification notification = locator<LocalNotification>();
-
-                notification.showNotification(title: _products.elementAt(index).name,
-                    body: "Houve atualização no seu produto.",
-                    id: code,
-                    payload: _products.elementAt(index).name+"¨"+_products.elementAt(index).code);
-
+                _getProductDetail(_products.elementAt(index));
               });
         });
   }

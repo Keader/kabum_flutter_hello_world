@@ -47,15 +47,26 @@ class LocalNotification {
     return _notifications.getNotificationAppLaunchDetails();
   }
 
-  NotificationDetails get _defaultNotification {
+  NotificationDetails _defaultNotification(String title, String body) {
+    final bigTextStyleInformation = BigTextStyleInformation(body
+        ,
+        htmlFormatBigText: true,
+        contentTitle: '<b>$title</b>',
+        htmlFormatContentTitle: true,
+        summaryText: '<i>atualização de produto</i>',
+        htmlFormatSummaryText: true);
     final androidChannelSpecifics = AndroidNotificationDetails(
       '1',
       'all',
       'send message to all members',
+      icon: 'ic_notification',
+      largeIcon: DrawableResourceAndroidBitmap('ic_notification'),
+      color: const Color.fromARGB(255, 255, 0, 0),
       importance: Importance.high,
       priority: Priority.high,
       ongoing: false,
       autoCancel: true,
+      styleInformation: bigTextStyleInformation
     );
     final iOSChannelSpecifics = IOSNotificationDetails();
     final mac = MacOSNotificationDetails();
@@ -77,7 +88,5 @@ class LocalNotification {
     int id = 0,
     String payload = ""
   }) =>
-      _showNotification(title: title, body: body, id: id, type: _defaultNotification, payload: payload);
+      _showNotification(title: title, body: body, id: id, type: _defaultNotification(title, body), payload: payload);
 }
-
-// example: Provider.of<LocalNotification>(context, listen: false).showNotification(title: "Titulo", body: "Corpo");

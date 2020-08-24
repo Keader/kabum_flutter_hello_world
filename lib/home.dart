@@ -107,19 +107,19 @@ void updateProducts() async {
 
       int newFlag = watch.flags;
       bool offer = false;
-      if (watch.flags & WatchButtonSheet.FLAG_OFFER != 0 && product.hasOffer) {
+      if ((watch.flags & WatchButtonSheet.FLAG_OFFER != 0) && product.hasOffer) {
         offer = true;
         newFlag &= ~WatchButtonSheet.FLAG_OFFER;
       }
 
       bool stock = false;
-      if (watch.flags & WatchButtonSheet.FLAG_STOCK != 0 && product.available) {
+      if ((watch.flags & WatchButtonSheet.FLAG_STOCK != 0) && product.available) {
         stock = true;
         newFlag &= ~WatchButtonSheet.FLAG_STOCK;
       }
 
       bool price = false;
-      if (watch.flags & WatchButtonSheet.FLAG_PRICE != 0 && watch.price <= double.tryParse(product.offerPrice)) {
+      if ((watch.flags & WatchButtonSheet.FLAG_PRICE != 0) && double.tryParse(product.offerPrice) <= watch.price) {
         price = true;
         newFlag &= ~WatchButtonSheet.FLAG_PRICE;
       }
@@ -139,7 +139,7 @@ void updateProducts() async {
       String body = "Seu produto" + bodyList.join(",") +".";
       final int code = int.tryParse(product.code);
       notification.showNotification(title: product.name,
-          body: "Houve atualização no seu produto.",
+          body: body,
           id: code,
           payload: product.name+"¨"+product.code);
 
